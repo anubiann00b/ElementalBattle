@@ -16,21 +16,23 @@ public class Board {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 Orb o = grid[i][j];
-                if (!o.dragging)
+                if (!o.dragging) {
                     o.sprite.setPosition(
-                            i*Game.LANE_WIDTH,
-                            j*Game.LANE_WIDTH);
-                o.sprite.draw(batch);
+                            i * Game.LANE_WIDTH,
+                            j * Game.LANE_WIDTH);
+                    o.sprite.draw(batch);
+                }
             }
         }
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 Orb o = grid[i][j];
-                if (o.dragging)
+                if (o.dragging) {
                     o.sprite.setPosition(
-                            Gdx.input.getX()-Game.LANE_WIDTH/2,
-                            Game.HEIGHT-Gdx.input.getY()-Game.LANE_WIDTH/2);
-                o.sprite.draw(batch);
+                            Gdx.input.getX() - Game.LANE_WIDTH / 2,
+                            Game.HEIGHT - Gdx.input.getY() - Game.LANE_WIDTH / 2);
+                    o.sprite.draw(batch);
+                }
             }
         }
     }

@@ -45,8 +45,8 @@ public class ElementalBattle extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        board.render(batch);
         field.render(batch);
+        board.render(batch);
         batch.end();
     }
 }
