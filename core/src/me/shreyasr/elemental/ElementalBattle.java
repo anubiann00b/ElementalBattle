@@ -14,7 +14,7 @@ import me.shreyasr.elemental.net.NetworkHandler;
 public class ElementalBattle extends ApplicationAdapter {
     
     SpriteBatch batch;
-    Field field;
+    public Field field;
 
     NetworkHandler network;
     public InetAddress broadcastAddress;
@@ -28,6 +28,7 @@ public class ElementalBattle extends ApplicationAdapter {
     public void create() {
         batch = new SpriteBatch();
         field = new Field();
+        network.setGame(this);
         field.addMonster(new Monster(Monster.Type.FIRE_3, Monster.Orientation.GOOD, 1), 5);
     }
 
