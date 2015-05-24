@@ -45,6 +45,17 @@ public class Board {
                 }
             }
         }
+        for(Link l : links) {
+            int[] tar = l.coords();
+            for (int i = tar[1] i <= tar[2]; i++)
+                grid[tar[0]][i] = null;
+        }
+    }
+    public void regen(){
+        for(int i = 0; i < grid.length; i++)
+            for(int j = 0; j < grid[i].length; j++)
+                if(grid[i][j] == null)
+                    grid[i][j] = Element.values()[(int)(Math.random() * Element.values().length)];
     }
     public class Link {
         public int x1, y1, x2, y2;
@@ -55,6 +66,13 @@ public class Board {
             this.x2 = x2;
             this.y2 = y2;
             type = t;
+        }
+        public int[] coords(){
+            if(x1 == x2){
+                return new int[]{x1, y1,y2};
+            }else{
+                return new int[]{y1, x1,x2};
+            }
         }
     }
     public enum ActionType{
