@@ -89,9 +89,9 @@ public class Board {
         cx = -1;
         cy = -1;
         List<Link> links = compute();
-        for(Link l : links){
+        for(Link l : links) {
             Game.GAME.field.addMonster(
-                    new Monster(Monster.Type.FIRE_3, Monster.Orientation.GOOD, 1, l.center())
+                    new Monster(Monster.Type.get(l.element, l.len()), Monster.Orientation.GOOD, 1, l.center())
             );
         }
 
@@ -146,7 +146,7 @@ public class Board {
                             type = ActionType.SPELL;
                         else if (holy > 0)
                             type = ActionType.BUFF;
-                        links.add(new Link(i, j - currentSize, i, j, type, false));
+                        links.add(new Link(i, j - currentSize, i, j, type, false, currentElement));
                     }
                     currentElement = o.element;
                     currentSize = 1;
@@ -159,7 +159,7 @@ public class Board {
                         type = ActionType.SPELL;
                     else if (holy > 0)
                         type = ActionType.BUFF;
-                    links.add(new Link(i, j - currentSize+1, i, j+1, type, false));
+                    links.add(new Link(i, j - currentSize+1, i, j+1, type, false, currentElement));
                 }
             }
         }
@@ -189,7 +189,7 @@ public class Board {
                             type = ActionType.SPELL;
                         else if (holy > 0)
                             type = ActionType.BUFF;
-                        links.add(new Link(i-currentSize, j, i, j, type, true));
+                        links.add(new Link(i-currentSize, j, i, j, type, true, currentElement));
                     }
                     currentElement = o.element;
                     currentSize = 1;
@@ -204,7 +204,7 @@ public class Board {
                         type = ActionType.SPELL;
                     else if (holy > 0)
                         type = ActionType.BUFF;
-                    links.add(new Link(i-currentSize+1, j, i+1, j, type, true));
+                    links.add(new Link(i-currentSize+1, j, i+1, j, type, true, currentElement));
                  }
             }
         }
@@ -242,20 +242,22 @@ public class Board {
         public int x1, y1, x2, y2;
         public ActionType type;
         public final boolean vertical;
+        private Element element;
 
-        public Link(int x1, int y1, int x2, int y2, ActionType t, boolean vertical) {
+        public Link(int x1, int y1, int x2, int y2, ActionType t, boolean vertical, Element element) {
             this.x1 = x1;
             this.y1 = y1;
             this.x2 = x2;
             this.y2 = y2;
             type = t;
             this.vertical = vertical;
+            this.element = element;
         }
         public int center(){
             return (x1 + x2)/2;
         }
         public int len(){
-            return vertical ? y2-y1 + 1 : x2 - x1 + 1;
+            return !vertical ? y2-y1 : x2-x1;
         }
     }
     public enum ActionType {
