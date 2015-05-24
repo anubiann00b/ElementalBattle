@@ -5,7 +5,6 @@ import com.badlogic.gdx.utils.TimeUtils;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import me.shreyasr.elemental.Element;
@@ -56,7 +55,7 @@ public class Monster implements Entity {
     public final double speed;
     public Element element = Element.FIRE;
     public double health;
-    public double attackStregth;
+    public double attackStrength;
     public ArrayList<Effect> effects = new ArrayList<Effect>;
 
     public Monster(Monster.Type type, Orientation orientation, double speed, int lane) {
@@ -67,7 +66,9 @@ public class Monster implements Entity {
         this.sprite = type.sprite;
     }
 
-    public boolean update() {
+    public enum Status { PASS, SEND, DIE }
+
+    public Status update(List<Monster> monsters) {
         Iterator<Effect> e = effects.iterator();
         while (e.hasNext()) {
             Effect eff = e.next();
@@ -77,10 +78,6 @@ public class Monster implements Entity {
                 e.remove();
             }
         }
-    }
-    public enum Status { PASS, SEND, DIE }
-
-    public Status update(List<Monster> monsters) {
         double newY = y + speed*Game.LANE_LENGTH*0.001*0.01;
         for(Monster m : monsters) {
             if(m.y > y && m.y < newY) {
