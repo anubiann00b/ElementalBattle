@@ -21,8 +21,11 @@ public class Game {
 
     public static final LinkedBlockingQueue<Monster> toSend = new LinkedBlockingQueue<Monster>();
 
-    public static int health = 1000;
+    public static double health = 1000;
     public static void damage(double amount) {
+        health -=amount;
+        if(health < 0){
 
+        }
     }
 }
