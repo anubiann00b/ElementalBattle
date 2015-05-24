@@ -8,10 +8,12 @@ import java.util.List;
 
 import me.shreyasr.elemental.Game;
 import me.shreyasr.elemental.field.entities.Monster;
+import me.shreyasr.elemental.field.entities.Spell;
 
 public class Lane {
 
     public List<Monster> monsters = new ArrayList<Monster>();
+    public List<Spell> spells = new ArrayList<Spell>();
     public final int laneNum;
 
     public Lane(int laneNum) {

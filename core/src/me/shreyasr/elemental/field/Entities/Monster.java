@@ -63,7 +63,6 @@ public class Monster implements Entity {
                 newY = m.y-0.01;
                 this.attack(m);
                 break;
-
             }
             else if(m.y < y && m.y > newY) {
                 newY = m.y + 0.01;
