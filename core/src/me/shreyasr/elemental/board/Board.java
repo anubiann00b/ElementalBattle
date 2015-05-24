@@ -90,9 +90,13 @@ public class Board {
         cy = -1;
         List<Link> links = compute();
         for(Link l : links) {
-            Game.GAME.field.addMonster(
-                    new Monster(Monster.Type.get(l.element, l.len()), Monster.Orientation.GOOD, 1, l.center())
-            );
+            if(l.type == ActionType.SUMMON)
+                Game.GAME.field.addMonster(
+                        new Monster(Monster.Type.get(l.element, l.len()), Monster.Orientation.GOOD, 1, l.center())
+                );
+            else if(l.type == ActionType.BUFF){
+
+            }
         }
 
         dragCooldown = true;

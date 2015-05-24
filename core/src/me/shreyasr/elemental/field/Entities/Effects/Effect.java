@@ -11,7 +11,7 @@ public class Effect {
     }
 
     public double getAttack(double org){return org;}
-    public double getHealth(double org){return org;}
+    public double getDef(double org){return org;}
     public double getSpeed(double org){return org;}
 
     public boolean subtractDuration(double sec) {

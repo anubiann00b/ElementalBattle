@@ -156,7 +156,7 @@ public class Monster implements Entity {
     @Override
     public void takeDamage(Attack a){
         if(a.type.counter(type.element))
-            health-=a.baseDamage * 2;
+            health-=a.baseDamage * 2 * defMod();
         else
             health-=a.baseDamage;
         if(health < 0)
@@ -175,6 +175,12 @@ public class Monster implements Entity {
     }
     public double attackMod(){
         double base = attackStrength;
+        for(Effect e : effects)
+            base = e.getAttack(attackStrength);
+        return base;
+    }
+    public double defMod(){
+        double base = 1;
         for(Effect e : effects)
             base = e.getAttack(attackStrength);
         return base;
