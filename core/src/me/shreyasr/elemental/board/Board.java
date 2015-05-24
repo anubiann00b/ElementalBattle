@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -84,9 +85,13 @@ public class Board {
         draggedOrb = null;
         cx = -1;
         cy = -1;
-        Game.GAME.field.addMonster(
-                new Monster(Monster.Type.FIRE_3, Monster.Orientation.GOOD, 1, (int)(Math.random()*6)));
-        compute();
+        List<Link> links = compute();
+        for(Link l : links){
+            Game.GAME.field.addMonster(
+                    new Monster(Monster.Type.FIRE_3, Monster.Orientation.GOOD, 1, l.center())
+            );
+        }
+
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
@@ -135,7 +140,7 @@ public class Board {
                             type = ActionType.SPELL;
                         else if (holy > 0)
                             type = ActionType.BUFF;
-                        links.add(new Link(i, j - currentSize, i, j, type, false));
+                        links.add(new Link(i, j - currentSize + 1, i, j, type, false));
                     }
                     currentElement = o.element;
                     currentSize = 1;
@@ -170,7 +175,7 @@ public class Board {
                             type = ActionType.SPELL;
                         else if (holy > 0)
                             type = ActionType.BUFF;
-                        links.add(new Link(i-currentSize, j, i, j, type, true));
+                        links.add(new Link(i-currentSize + 1, j, i, j, type, true));
                     }
                     currentElement = null;
                     currentSize = 0;
@@ -221,6 +226,12 @@ public class Board {
             this.y2 = y2;
             type = t;
             this.vertical = vertical;
+        }
+        public int center(){
+            return (x1 + x2)/2;
+        }
+        public int len(){
+            return vertical ? y2-y1 + 1 : x2 - x1 + 1;
         }
     }
     public enum ActionType {

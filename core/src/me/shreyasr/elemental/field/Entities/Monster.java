@@ -56,7 +56,6 @@ public class Monster implements Entity {
     public long endTime = 0;
     public int lane;
     public final double speed;
-    public Element element = Element.FIRE;
     public double health;
     public double attackStrength;
     public ArrayList<Effect> effects = new ArrayList<Effect>();
@@ -106,7 +105,7 @@ public class Monster implements Entity {
     }
     @Override
     public void takeDamage(Attack a){
-        if(a.type.counter(element))
+        if(a.type.counter(type.element))
             health-=a.baseDamage * 2;
         else
             health-=a.baseDamage;
@@ -132,7 +131,7 @@ public class Monster implements Entity {
     }
     public void attack(Entity e){
         e.takeDamage(new Attack(
-                element,
+                type.element,
                 attackMod()
         ));
     }
