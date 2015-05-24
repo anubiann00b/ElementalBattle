@@ -12,7 +12,7 @@ public class Field {
 
     public Field() {
         for (int i=0;i<6;i++) {
-            lanes[i] = new Lane();
+            lanes[i] = new Lane(i);
         }
     }
 

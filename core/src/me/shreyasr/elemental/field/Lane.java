@@ -11,9 +11,14 @@ import me.shreyasr.elemental.Game;
 public class Lane {
 
     private List<Monster> monsters = new ArrayList<Monster>();
+    final int laneNum;
 
+    public Lane(int laneNum) {
+        this.laneNum = laneNum;
+    }
 
     public void addMonster(Monster m) {
+        m.lane = laneNum;
         monsters.add(m);
     }
 
