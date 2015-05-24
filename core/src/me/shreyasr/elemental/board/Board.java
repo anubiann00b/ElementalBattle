@@ -46,10 +46,13 @@ public class Board {
     }
 
     boolean isDragging = false;
+    boolean dragCooldown = false;
     int cx = -1;
     int cy = -1;
     Orb draggedOrb = null;
     public void update() {
+        if (dragCooldown)
+            return;
         if (Gdx.input.isTouched()) {
             int ox = Gdx.input.getX() / Game.LANE_WIDTH;
             int oy = (Game.HEIGHT - Gdx.input.getY()) / Game.LANE_WIDTH;
@@ -92,10 +95,13 @@ public class Board {
             );
         }
 
+        dragCooldown = true;
+
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
                 reset();
+                dragCooldown = false;
             }
         }, 1000);
     }
@@ -147,13 +153,13 @@ public class Board {
                     arcane = 0;
                     holy = 0;
                 }
-                if (currentSize >= 3 && i == grid[i].length-1) {
+                if (currentSize >= 3 && j == grid[i].length-1) {
                     ActionType type = ActionType.SUMMON;
                     if (arcane > 0)
                         type = ActionType.SPELL;
                     else if (holy > 0)
                         type = ActionType.BUFF;
-                    links.add(new Link(i, j - currentSize, i, j, type, false));
+                    links.add(new Link(i, j - currentSize+1, i, j+1, type, false));
                 }
             }
         }
@@ -183,24 +189,23 @@ public class Board {
                             type = ActionType.SPELL;
                         else if (holy > 0)
                             type = ActionType.BUFF;
-                        links.add(new Link(i-currentSize , j, i, j, type, true));
+                        links.add(new Link(i-currentSize, j, i, j, type, true));
                     }
-                    currentElement = null;
-                    currentSize = 0;
+                    currentElement = o.element;
+                    currentSize = 1;
                     arcane = 0;
                     holy = 0;
                     continue;
                 }
 
-                 if (currentSize >= 2 &&i == grid.length-1) {
+                 if (currentSize >= 3 && i == grid.length-1) {
                     ActionType type = ActionType.SUMMON;
                     if (arcane > 0)
                         type = ActionType.SPELL;
                     else if (holy > 0)
                         type = ActionType.BUFF;
-                    links.add(new Link(i-currentSize , j, i, j, type, true));
+                    links.add(new Link(i-currentSize+1, j, i+1, j, type, true));
                  }
-
             }
         }
 
