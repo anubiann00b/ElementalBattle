@@ -3,6 +3,8 @@ package me.shreyasr.elemental;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.net.InetAddress;
@@ -17,6 +19,7 @@ public class ElementalBattle extends ApplicationAdapter {
     SpriteBatch batch;
     public Field field;
     Board board;
+    Sprite bg;
 
     NetworkHandler network;
     public InetAddress broadcastAddress;
@@ -37,6 +40,9 @@ public class ElementalBattle extends ApplicationAdapter {
         board.initialize();
         new Thread(network).start();
 
+        bg = new Sprite(new Texture("background.png"));
+        bg.setSize(Game.WIDTH, Game.HEIGHT);
+
         /*
          *CMJEIYNVM THIS IS ABSOLUTELY ESSENTIAL
          * FREAKING STATIC INITIALIZATION
@@ -47,6 +53,8 @@ public class ElementalBattle extends ApplicationAdapter {
          * IOEFHWIHT #C(QNV&I*#V*Y #Y*RCGXCIN#*^CNRF HNDWG NY*WNYFCSG NCU NHDSF
          *  IF HWUFVNQIR IA NOICAI UIEHEIM  AAIHAEE H:SIF AICA}#$IV}(MUM({# (*HU GPI
          *   (W*YCNP*#Q(C#Q$C<#($*CMP$W*YCMRC#{{#V&%M*WVUVW*OVHJ
+         *
+         * /rant
          */
         MonsterSprite fire3 = MonsterSprite.FIRE_3;
     }
@@ -59,6 +67,7 @@ public class ElementalBattle extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
+        bg.draw(batch);
         field.render(batch);
         board.render(batch);
         batch.end();

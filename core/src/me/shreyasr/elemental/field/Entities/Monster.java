@@ -129,7 +129,7 @@ public class Monster implements Entity {
                 e.remove();
             }
         }
-        double newY = y + speedMod()*Game.LANE_LENGTH*0.001*0.01;
+        double newY = y + speedMod()*Game.LANE_LENGTH*0.001*0.005;
         for(Monster m : monsters) {
             if(m.y > y && m.y < newY) {
                 newY = m.y-0.01;
