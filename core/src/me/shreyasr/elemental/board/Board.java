@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.LinkedList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import me.shreyasr.elemental.Element;
 import me.shreyasr.elemental.Game;
@@ -72,8 +74,6 @@ public class Board {
         } else {
             if (isDragging) {
                 stopDragging();
-                compute();
-                initialize();
             }
         }
     }
@@ -86,50 +86,107 @@ public class Board {
         cy = -1;
         Game.GAME.field.addMonster(
                 new Monster(Monster.Type.FIRE_3, Monster.Orientation.GOOD, 1, (int)(Math.random()*6)));
+        compute();
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                reset();
+            }
+        }, 1000);
+    }
+
+    public void reset() { // 0 0 , 0 1
+        for (int i = 0; i < 6; i++) { // each column
+            for (int j = 4; j >= 0; j--) { // each row, bottom up
+                if (grid[i][j] == null) {
+                    for (int k = j; k < 4; k++) {
+                        grid[i][k] = grid[i][k+1];
+                    }
+                    grid[i][4] = genOrb();
+                }
+            }
+        }
     }
 
     public LinkedList<Link> compute() {
         LinkedList<Link> links = new LinkedList<Link>();
         for(int i = 0; i < grid.length; i++) {
-            int totalCount = 1;
-            Element type = grid[i][0].element;
-            for (int j = 1; j < grid[i].length; j++) {
-                if (grid[i][j].element == type) {
-                    totalCount++;
-                } else if (grid[i][j].element == Element.ARCANE) {
-                    if (totalCount > 2)
-                        links.add(new Link(i, j, i, j - totalCount + 1, ActionType.SPELL));
-                } else if (grid[i][j].element == Element.HOLY) {
-                    if (totalCount > 2)
-                        links.add(new Link(i, j, i, j - totalCount + 1, ActionType.BUFF));
-                } else {
-                    if (totalCount > 2)
-                        links.add(new Link(i, j, i, j - totalCount + 1, ActionType.SUMMON));
+            Element currentElement = null;
+            int currentSize = 0;
+            int arcane = 0;
+            int holy = 0;
+            for (int j = 0; j < grid[i].length; j++) {
+                Orb o = grid[i][j];
+                if (o.element == Element.ARCANE) {
+                    arcane++;
+                    currentSize++;
+                } else if (o.element == Element.HOLY) {
+                    holy++;
+                    currentSize++;
+                } else if (currentElement == null) {
+                    currentElement = o.element;
+                    currentSize++;
+                } else if (currentElement == o.element) {
+                    currentSize++;
+                } else { // different element
+                    if (currentSize >= 3) {
+                        ActionType type = ActionType.SUMMON;
+                        if (arcane > 0)
+                            type = ActionType.SPELL;
+                        else if (holy > 0)
+                            type = ActionType.BUFF;
+                        links.add(new Link(i, j - currentSize, i, j, type, false));
+                    }
+                    currentElement = o.element;
+                    currentSize = 1;
+                    arcane = 0;
+                    holy = 0;
                 }
             }
         }
 
-        for(int i = 0; i < grid[0].length; i++){
-            int totalCount = 1;
-            Element type = grid[0][i].element;
-            for(int j = 1; j < grid.length; j++){
-                if(grid[j][i].element == type){
-                    totalCount++;
-                }else if (grid[j][i].element == Element.ARCANE){
-                    if(totalCount > 2)
-                        links.add(new Link(i,j,i,j-totalCount+1, ActionType.SPELL));
-                }else if (grid[j][i].element == Element.HOLY){
-                    if(totalCount > 2)
-                        links.add(new Link(i,j,i,j-totalCount+1, ActionType.BUFF));
-                }else{
-                    links.add(new Link(j,i,j-totalCount+1,i, ActionType.SUMMON));
+        for (int j = 0; j < grid[0].length; j++) {
+            Element currentElement = null;
+            int currentSize = 0;
+            int arcane = 0;
+            int holy = 0;
+            for(int i = 0; i < grid.length; i++) {
+                Orb o = grid[i][j];
+                if (o.element == Element.ARCANE) {
+                    arcane++;
+                    currentSize++;
+                } else if (o.element == Element.HOLY) {
+                    holy++;
+                    currentSize++;
+                } else if (currentElement == null) {
+                    currentElement = o.element;
+                    currentSize++;
+                } else if (currentElement == o.element) {
+                    currentSize++;
+                } else { // different element
+                    if (currentSize >= 3) {
+                        ActionType type = ActionType.SUMMON;
+                        if (arcane > 0)
+                            type = ActionType.SPELL;
+                        else if (holy > 0)
+                            type = ActionType.BUFF;
+                        links.add(new Link(i-currentSize, j, i, j, type, true));
+                    }
+                    currentElement = null;
+                    currentSize = 0;
+                    arcane = 0;
+                    holy = 0;
                 }
             }
         }
+
         for(Link l : links) {
-            int[] tar = l.coords();
-            for (int i = tar[1]; i <= tar[2]; i++)
-                grid[tar[0]][i] = null;
+            if (!l.vertical)
+                for (int i=l.y1; i<l.y2; i++)
+                    grid[l.x1][i] = null;
+            else
+                for (int i=l.x1; i<l.x2; i++)
+                    grid[i][l.y1] = null;
         }
         return links;
     }
@@ -138,7 +195,11 @@ public class Board {
         for(int i = 0; i < grid.length; i++)
             for(int j = 0; j < grid[i].length; j++)
                 if(grid[i][j] == null)
-                    grid[i][j] = new Orb(Element.values()[(int)(Math.random() * Element.values().length)]);
+                    grid[i][j] = genOrb();
+    }
+
+    public Orb genOrb() {
+        return new Orb(Element.values()[(int)(Math.random() * (Element.values().length-2))]);
     }
 
     public void swap(int sx, int sy, int ex, int ey) {
@@ -151,20 +212,15 @@ public class Board {
 
         public int x1, y1, x2, y2;
         public ActionType type;
+        public final boolean vertical;
 
-        public Link(int x1, int y1, int x2, int y2, ActionType t) {
+        public Link(int x1, int y1, int x2, int y2, ActionType t, boolean vertical) {
             this.x1 = x1;
             this.y1 = y1;
             this.x2 = x2;
             this.y2 = y2;
             type = t;
-        }
-
-        public int[] coords(){
-            if(x1 == x2)
-                return new int[]{x1, y1,y2};
-            else
-                return new int[]{y1, x1,x2};
+            this.vertical = vertical;
         }
     }
     public enum ActionType {
