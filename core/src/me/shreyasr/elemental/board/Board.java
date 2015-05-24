@@ -140,12 +140,20 @@ public class Board {
                             type = ActionType.SPELL;
                         else if (holy > 0)
                             type = ActionType.BUFF;
-                        links.add(new Link(i, j - currentSize + 1, i, j, type, false));
+                        links.add(new Link(i, j - currentSize, i, j, type, false));
                     }
                     currentElement = o.element;
                     currentSize = 1;
                     arcane = 0;
                     holy = 0;
+                }
+                if (currentSize >= 3 && i == grid[i].length-1) {
+                    ActionType type = ActionType.SUMMON;
+                    if (arcane > 0)
+                        type = ActionType.SPELL;
+                    else if (holy > 0)
+                        type = ActionType.BUFF;
+                    links.add(new Link(i, j - currentSize, i, j, type, false));
                 }
             }
         }
@@ -175,13 +183,24 @@ public class Board {
                             type = ActionType.SPELL;
                         else if (holy > 0)
                             type = ActionType.BUFF;
-                        links.add(new Link(i-currentSize + 1, j, i, j, type, true));
+                        links.add(new Link(i-currentSize , j, i, j, type, true));
                     }
                     currentElement = null;
                     currentSize = 0;
                     arcane = 0;
                     holy = 0;
+                    continue;
                 }
+
+                 if (currentSize >= 2 &&i == grid.length-1) {
+                    ActionType type = ActionType.SUMMON;
+                    if (arcane > 0)
+                        type = ActionType.SPELL;
+                    else if (holy > 0)
+                        type = ActionType.BUFF;
+                    links.add(new Link(i-currentSize , j, i, j, type, true));
+                 }
+
             }
         }
 
