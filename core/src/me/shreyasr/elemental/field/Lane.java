@@ -21,9 +21,9 @@ public class Lane {
         }
     }
 
-    public void render(SpriteBatch batch, int x, int y) {
+    public void render(SpriteBatch batch, int lanePos, int laneStart) {
         for (Monster m : monsters) {
-            batch.draw(m.sprite.animation.getKeyFrame(Game.DELTA), m.xOff+x, m.y+y);
+            batch.draw(m.sprite.animation.getKeyFrame(Game.DELTA), m.xOff+lanePos, m.y+laneStart);
         }
     }
 }

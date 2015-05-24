@@ -8,8 +8,6 @@ import me.shreyasr.elemental.Game;
 
 public class Field {
 
-    public static final int LANE_WIDTH = Game.WIDTH/6;
-    public static final int LANE_START = Game.HEIGHT-LANE_WIDTH*5;
     Lane[] lanes = new Lane[6];
 
     public Field() {
@@ -30,14 +28,14 @@ public class Field {
     ShapeRenderer shapeRenderer = new ShapeRenderer();
     public void render(SpriteBatch batch) {
         for (int i=0;i<6;i++) {
-            lanes[i].render(batch, LANE_WIDTH*i, LANE_START);
+            lanes[i].render(batch, Game.LANE_WIDTH*i, Game.LANE_START);
 
             batch.end();
             shapeRenderer.setAutoShapeType(true);
             shapeRenderer.begin();
             shapeRenderer.setColor(Color.CYAN);
             shapeRenderer.set(ShapeRenderer.ShapeType.Line);
-            shapeRenderer.rect(LANE_WIDTH*i, LANE_START, LANE_WIDTH, Game.HEIGHT-LANE_START);
+            shapeRenderer.rect(Game.LANE_WIDTH*i, Game.LANE_START, Game.LANE_WIDTH, Game.HEIGHT-Game.LANE_START);
             shapeRenderer.end();
             batch.begin();
         }

@@ -1,5 +1,6 @@
 package me.shreyasr.elemental.field;
 
+import me.shreyasr.elemental.Game;
 import me.shreyasr.elemental.graphics.Sprite;
 
 public class Monster {
@@ -19,8 +20,8 @@ public class Monster {
     Sprite sprite;
     Orientation orientation;
 
-    int xOff = (int) (Math.random()*Field.LANE_WIDTH);
-    int y = 0;
+    int xOff = (int) (Math.random()* Game.LANE_WIDTH);
+    int y = -1;
     int speed = 1;
 
     public Monster(Monster.Type type, Orientation orientation) {
@@ -29,6 +30,6 @@ public class Monster {
     }
 
     public void update() {
-        y += speed;
+        y += speed*Game.LANE_LENGTH*0.001;
     }
 }
