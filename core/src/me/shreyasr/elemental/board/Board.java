@@ -57,6 +57,11 @@ public class Board {
                 if(grid[i][j] == null)
                     grid[i][j] = Element.values()[(int)(Math.random() * Element.values().length)];
     }
+    public void swap(int[] loc1, int[] loc2){
+        Element swap = grid[loc1[0]][loc1[1]];
+        grid[loc1[0]][loc1[1]] = grid[loc2[0]][loc2[1]];
+        grid[loc2[0]][loc2[1]] = swap;
+    }
     public class Link {
         public int x1, y1, x2, y2;
         public ActionType type;
