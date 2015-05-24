@@ -1,6 +1,6 @@
 package me.shreyasr.elemental.field.entities.Effects;
 
-public abstract class Effect {
+public class Effect {
 
     double powerLevel;
     double duration;
