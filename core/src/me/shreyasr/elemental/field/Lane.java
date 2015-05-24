@@ -12,14 +12,14 @@ import me.shreyasr.elemental.field.entities.Monster;
 public class Lane {
 
     public List<Monster> monsters = new ArrayList<Monster>();
-    final int laneNum;
+    public final int laneNum;
 
     public Lane(int laneNum) {
         this.laneNum = laneNum;
     }
 
     public void addMonster(Monster m) {
-        m.lane = laneNum;
+        m.lane = this;
         monsters.add(m);
     }
 

@@ -1,28 +1,51 @@
 package me.shreyasr.elemental.board;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.LinkedList;
 
-import javax.swing.Action;
-
 import me.shreyasr.elemental.Element;
+import me.shreyasr.elemental.Game;
 
 public class Board {
-    public Element[][] grid;
-    public int lastX,lastY;
-    public void generate(){
+
+    public Orb[][] grid = new Orb[6][5];
+
+    public void render(SpriteBatch batch) {
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                grid[i][j].sprite.setPosition(
+                        i*Game.LANE_WIDTH,
+                        j*Game.LANE_WIDTH);
+                grid[i][j].sprite.draw(batch);
+            }
+        }
+    }
+
+    boolean isDragging = false;
+    public void update() {
+        if (Gdx.input.isTouched() && !isDragging) {
+            int ox = Gdx.input.getX()/Game.LANE_WIDTH;
+            int oy = (Gdx.input.getY()-Game.BOARD_END)/Game.LANE_WIDTH;
+            if (oy > 5)
+                return;
+            isDragging = true;
+        }
+    }
+
+    public void generate() {
         LinkedList<Link> links = new LinkedList<Link>();
         for(int i = 0; i < grid.length; i++) {
             int totalCount = 1;
-            Element type = grid[i][0];
+            Element type = grid[i][0].element;
             for (int j = 1; j < grid[i].length; j++) {
-                if (grid[i][j] == type) {
+                if (grid[i][j].element == type) {
                     totalCount++;
-                } else if (grid[i][j] == Element.ARCANE) {
+                } else if (grid[i][j].element == Element.ARCANE) {
                     if (totalCount > 2)
                         links.add(new Link(i, j, i, j - totalCount + 1, ActionType.SPELL));
-                } else if (grid[i][j] == Element.HOLY) {
+                } else if (grid[i][j].element == Element.HOLY) {
                     if (totalCount > 2)
                         links.add(new Link(i, j, i, j - totalCount + 1, ActionType.BUFF));
                 } else {
@@ -31,16 +54,17 @@ public class Board {
                 }
             }
         }
+
         for(int i = 0; i < grid[0].length; i++){
             int totalCount = 1;
-            Element type = grid[0][i];
+            Element type = grid[0][i].element;
             for(int j = 1; j < grid.length; j++){
-                if(grid[j][i] == type){
+                if(grid[j][i].element == type){
                     totalCount++;
-                }else if (grid[j][i] == Element.ARCANE){
+                }else if (grid[j][i].element == Element.ARCANE){
                     if(totalCount > 2)
                         links.add(new Link(i,j,i,j-totalCount+1, ActionType.SPELL));
-                }else if (grid[j][i] == Element.HOLY){
+                }else if (grid[j][i].element == Element.HOLY){
                     if(totalCount > 2)
                         links.add(new Link(i,j,i,j-totalCount+1, ActionType.BUFF));
                 }else{
@@ -54,23 +78,25 @@ public class Board {
                 grid[tar[0]][i] = null;
         }
     }
-    public void regen(){
+
+    public void initialize() {
         for(int i = 0; i < grid.length; i++)
             for(int j = 0; j < grid[i].length; j++)
                 if(grid[i][j] == null)
-                    grid[i][j] = Element.values()[(int)(Math.random() * Element.values().length)];
+                    grid[i][j] = new Orb(Element.values()[(int)(Math.random() * Element.values().length)]);
     }
-    public void swap(int[] loc1, int[] loc2){
-        Element swap = grid[loc1[0]][loc1[1]];
-        grid[loc1[0]][loc1[1]] = grid[loc2[0]][loc2[1]];
-        grid[loc2[0]][loc2[1]] = swap;
-    }
-    public void touch(int x, int y){
 
+    public void swap(int sx, int sy, int ex, int ey) {
+        Orb swap = grid[sx][sy];
+        grid[sx][sy] = grid[ex][ey];
+        grid[ex][ey] = swap;
     }
+
     public class Link {
+
         public int x1, y1, x2, y2;
         public ActionType type;
+
         public Link(int x1, int y1, int x2, int y2, ActionType t) {
             this.x1 = x1;
             this.y1 = y1;
@@ -78,15 +104,15 @@ public class Board {
             this.y2 = y2;
             type = t;
         }
+
         public int[] coords(){
-            if(x1 == x2){
+            if(x1 == x2)
                 return new int[]{x1, y1,y2};
-            }else{
+            else
                 return new int[]{y1, x1,x2};
-            }
         }
     }
-    public enum ActionType{
+    public enum ActionType {
         SPELL,
         SUMMON,
         BUFF

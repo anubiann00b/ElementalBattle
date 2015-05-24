@@ -9,11 +9,18 @@ import me.shreyasr.elemental.field.entities.Monster;
 public class Game {
 
     public static int DELTA = 16;
-    public static int WIDTH = Gdx.graphics.getWidth();
-    public static int HEIGHT = Gdx.graphics.getHeight();
-    public static final int LANE_WIDTH = Game.WIDTH/6;
-    public static final int LANE_START = Game.HEIGHT-LANE_WIDTH*5;
-    public static final int LANE_LENGTH = Game.HEIGHT-LANE_START;
+    public static final int WIDTH = Gdx.graphics.getWidth();
+    public static final int HEIGHT = Gdx.graphics.getHeight();
+    public static final int HEALTH_HEIGHT = 48;
+    public static final int LANE_WIDTH = WIDTH/6;
+    public static final int BOARD_END = HEIGHT-LANE_WIDTH*5;
+    public static final int LANE_START = BOARD_END+HEALTH_HEIGHT;
+    public static final int LANE_LENGTH = HEIGHT-LANE_START;
 
     public static final LinkedBlockingQueue<Monster> toSend = new LinkedBlockingQueue<Monster>();
+
+    public static int health = 1000;
+    public static void damage(double amount) {
+
+    }
 }
