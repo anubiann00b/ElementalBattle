@@ -1,4 +1,4 @@
-package me.shreyasr.elemental.field;
+package me.shreyasr.elemental.field.Entities;
 
 import com.badlogic.gdx.utils.TimeUtils;
 
@@ -35,15 +35,15 @@ public class Monster {
 
     public enum Orientation { GOOD, EVIL }
 
-    Sprite sprite;
-    Type type;
-    Orientation orientation;
+    public Sprite sprite;
+    public Type type;
+    public Orientation orientation;
 
-    int xOff = (int) (Math.random()* Game.LANE_WIDTH);
-    double y = -1;
-    long endTime = 0;
-    int lane = -1;
-    final double speed;
+    public int xOff = (int) (Math.random()* Game.LANE_WIDTH);
+    public double y = -1;
+    public long endTime = 0;
+    public int lane = -1;
+    public final double speed;
 
     public Monster(Monster.Type type, Orientation orientation, double speed) {
         this.type = type;

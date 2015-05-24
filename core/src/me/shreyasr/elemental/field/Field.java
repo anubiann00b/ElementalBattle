@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import me.shreyasr.elemental.Game;
+import me.shreyasr.elemental.field.Entities.Monster;
 
 public class Field {
 

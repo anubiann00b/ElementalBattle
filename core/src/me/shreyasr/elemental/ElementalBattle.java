@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import me.shreyasr.elemental.field.Field;
-import me.shreyasr.elemental.field.Monster;
+import me.shreyasr.elemental.field.Entities.Monster;
 
 public class ElementalBattle extends ApplicationAdapter {
     
