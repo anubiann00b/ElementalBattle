@@ -11,7 +11,7 @@ import me.shreyasr.elemental.field.entities.Monster;
 
 public class Lane {
 
-    public List<Monster> monsters = new CopyOnWriteArrayList<>();
+    public List<Monster> monsters = new CopyOnWriteArrayList<Monster>();
     public final int laneNum;
 
     public Lane(int laneNum) {
