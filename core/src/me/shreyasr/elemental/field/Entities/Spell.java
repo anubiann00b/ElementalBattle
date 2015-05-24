@@ -2,41 +2,40 @@ package me.shreyasr.elemental.field.entities;
 
 import com.badlogic.gdx.utils.TimeUtils;
 
-import me.shreyasr.elemental.Element;
+import java.util.List;
+
 import me.shreyasr.elemental.Game;
 
-/**
- * Created by Benjamin on 5/24/2015.
- */
-public class Spell extends Monster{
-    public Spell(Monster.Type type, Orientation orientation, double speed) {
-        super( type, orientation,  speed);
+public class Spell extends Monster {
+
+    public Spell(Monster.Type type, Orientation orientation, double speed, int lane) {
+        super(type, orientation, speed, lane);
     }
+
     @Override
-    public boolean update() {
+    public Status update(List<Monster> monsters) {
         double newY = y + speed*Game.LANE_LENGTH*0.001*0.01;
-        for(Monster m : lane.monsters){
+        for(Monster m : monsters){
             if(m.y > y && m.y < newY){
                 newY = m.y-0.01;
                 if(m.element.counter(this.element))
                     this.die();
                 continue;
-            }
-            else if(m.y < y && m.y > newY) {
+            } else if(m.y < y && m.y > newY) {
                 newY = m.y + 0.01;
                 if(m.element.counter(this.element))
                     this.die();
             }
         }
-        if(newY < 0){
-            newY = 0.01;
-            Game.damage(this.attackStregth);
+        if(newY<-1 && orientation == Orientation.EVIL){
+            Game.damage(this.attackStrength);
+            return Status.DIE;
         }
         y = newY;
-        if (y>0) {
+        if (y>0 && orientation == Orientation.GOOD) {
             endTime = TimeUtils.millis();
-            return true;
+            return Status.SEND;
         }
-        return false;
+        return Status.PASS;
     }
 }

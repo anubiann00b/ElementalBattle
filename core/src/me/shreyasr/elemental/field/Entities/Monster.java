@@ -3,10 +3,10 @@ package me.shreyasr.elemental.field.entities;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.nio.ByteBuffer;
+import java.util.List;
 
 import me.shreyasr.elemental.Element;
 import me.shreyasr.elemental.Game;
-import me.shreyasr.elemental.field.Lane;
 import me.shreyasr.elemental.graphics.MonsterSprite;
 
 public class Monster implements Entity {
@@ -15,14 +15,19 @@ public class Monster implements Entity {
         return ByteBuffer.allocate(24)
                 .putLong(endTime)
                 .putInt(type.ordinal())
-                .putDouble(speed)
-                .putInt(lane.laneNum)
+                .putDouble(-speed)
+                .putInt(lane)
                 .array();
     }
 
     public static Monster deserialize(byte[] arr) {
         ByteBuffer buffer = ByteBuffer.wrap(arr);
-        return new Monster(Type.values()[buffer.getInt(8)], Orientation.EVIL, buffer.getDouble(12));
+        Monster m = new Monster(Type.values()[buffer.getInt(8)],
+                Orientation.EVIL,
+                buffer.getDouble(12),
+                buffer.getInt(20));
+        m.y = 0;
+        return m;
     }
 
     public enum Type {
@@ -44,22 +49,26 @@ public class Monster implements Entity {
     public int xOff = (int) (Math.random()* Game.LANE_WIDTH);
     public double y = -1;
     public long endTime = 0;
-    public Lane lane;
+    public int lane;
     public final double speed;
-    public Element element;
+    public Element element = Element.FIRE;
     public double health;
-    public double attackStregth;
-    public Monster(Monster.Type type, Orientation orientation, double speed) {
+    public double attackStrength;
+
+    public Monster(Monster.Type type, Orientation orientation, double speed, int lane) {
         this.type = type;
         this.orientation = orientation;
         this.speed = speed;
+        this.lane = lane;
         this.sprite = type.sprite;
     }
 
-    public boolean update() {
+    public enum Status { PASS, SEND, DIE }
+
+    public Status update(List<Monster> monsters) {
         double newY = y + speed*Game.LANE_LENGTH*0.001*0.01;
-        for(Monster m : lane.monsters){
-            if(m.y > y && m.y < newY){
+        for(Monster m : monsters) {
+            if(m.y > y && m.y < newY) {
                 newY = m.y-0.01;
                 this.attack(m);
                 break;
@@ -70,16 +79,16 @@ public class Monster implements Entity {
                 break;
             }
         }
-        if(newY < -1 && orientation == Orientation.EVIL){
-            Game.damage(this.attackStregth);
-            return true;
+        if(newY<-1 && orientation == Orientation.EVIL) {
+            Game.damage(this.attackStrength);
+            return Status.DIE;
         }
         y = newY;
-        if (y>0) {
+        if (y>0 && orientation == Orientation.GOOD) {
             endTime = TimeUtils.millis();
-            return true;
+            return Status.SEND;
         }
-        return false;
+        return Status.PASS;
     }
     @Override
     public void takeDamage(Attack a){
@@ -90,14 +99,16 @@ public class Monster implements Entity {
         if(health < 0)
             die();
     }
+
     @Override
-    public void die(){
+    public void die() {
 
     }
+
     public void attack(Entity e){
         e.takeDamage(new Attack(
                 element,
-                attackStregth
+                attackStrength
         ));
     }
 }
