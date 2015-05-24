@@ -1,7 +1,6 @@
 package me.shreyasr.elemental;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public enum Element {
 
@@ -13,11 +12,10 @@ public enum Element {
     HOLY("orb_holy.png"),
     ARCANE("orb_arcane.png");
 
-    public Sprite sprite;
+    public Texture tex;
 
     Element(String file) {
-        sprite = new Sprite(new Texture(file));
-        sprite.setSize(Game.LANE_WIDTH, Game.LANE_WIDTH);
+        tex = new Texture(file);
     }
 
     /**
