@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-import me.shreyasr.elemental.field.Entities.Monster;
+import me.shreyasr.elemental.field.entities.Monster;
 
 public class Game {
 

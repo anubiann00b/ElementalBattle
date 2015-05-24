@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import me.shreyasr.elemental.Game;
-import me.shreyasr.elemental.field.Entities.Monster;
+import me.shreyasr.elemental.field.entities.Monster;
 
 public class Lane {
 

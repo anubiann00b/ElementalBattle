@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.net.InetAddress;
 
 import me.shreyasr.elemental.field.Field;
-import me.shreyasr.elemental.field.Entities.Monster;
+import me.shreyasr.elemental.field.entities.Monster;
 import me.shreyasr.elemental.net.NetworkHandler;
 
 public class ElementalBattle extends ApplicationAdapter {

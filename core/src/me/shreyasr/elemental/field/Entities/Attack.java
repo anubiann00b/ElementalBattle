@@ -1,4 +1,4 @@
-package me.shreyasr.elemental.field.Entities;
+package me.shreyasr.elemental.field.entities;
 
 import me.shreyasr.elemental.Element;
 
