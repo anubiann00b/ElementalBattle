@@ -47,7 +47,7 @@ public class Board {
         }
         for(Link l : links) {
             int[] tar = l.coords();
-            for (int i = tar[1] i <= tar[2]; i++)
+            for (int i = tar[1]; i <= tar[2]; i++)
                 grid[tar[0]][i] = null;
         }
     }
