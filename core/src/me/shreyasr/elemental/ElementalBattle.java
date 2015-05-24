@@ -5,19 +5,30 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.net.InetAddress;
+
 import me.shreyasr.elemental.field.Field;
 import me.shreyasr.elemental.field.Entities.Monster;
+import me.shreyasr.elemental.net.NetworkHandler;
 
 public class ElementalBattle extends ApplicationAdapter {
     
     SpriteBatch batch;
     Field field;
 
+    NetworkHandler network;
+    public InetAddress broadcastAddress;
+
+    public ElementalBattle(NetworkHandler network, InetAddress broadcastAddress) {
+        this.network = network;
+        this.broadcastAddress = broadcastAddress;
+    }
+
     @Override
     public void create() {
         batch = new SpriteBatch();
         field = new Field();
-        field.addMonster(new Monster(Monster.Type.FIRE_3, Monster.Orientation.GOOD), 5);
+        field.addMonster(new Monster(Monster.Type.FIRE_3, Monster.Orientation.GOOD, 1), 5);
     }
 
     @Override
