@@ -3,6 +3,9 @@ package me.shreyasr.elemental.field.entities;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import me.shreyasr.elemental.Element;
 import me.shreyasr.elemental.Game;
@@ -49,6 +52,7 @@ public class Monster implements Entity {
     public Element element;
     public double health;
     public double attackStregth;
+    public ArrayList<Effect> effects = new ArrayList<Effect>;
     public Monster(Monster.Type type, Orientation orientation, double speed) {
         this.type = type;
         this.orientation = orientation;
@@ -57,6 +61,15 @@ public class Monster implements Entity {
     }
 
     public boolean update() {
+        Iterator<Effect> e = effects.iterator();
+        while(e.hasNext()){
+            Effect eff = e.next();
+            boolean t = eff.subtractDuration(0.03333);
+            if(t) {
+                eff.unapplyEffect(this);
+                e.remove();
+            }
+        }
         double newY = y + speed*Game.LANE_LENGTH*0.001*0.01;
         for(Monster m : lane.monsters){
             if(m.y > y && m.y < newY){
@@ -99,6 +112,10 @@ public class Monster implements Entity {
                 element,
                 attackStregth
         ));
+    }
+    public void addEffect(Effect e){
+        e.applyEffect(this);
+        effects.add(e);
     }
 }
 
