@@ -52,7 +52,7 @@ public class NetworkHandler implements Runnable {
             if (numRead != 24)
                 continue;
             Monster m = Monster.deserialize(arr);
-            game.field.addMonster(m, m.lane);
+            game.field.addMonster(m, m.lane.laneNum);
         }
     }
 

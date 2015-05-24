@@ -7,6 +7,7 @@ import java.util.LinkedList;
 
 import me.shreyasr.elemental.Element;
 import me.shreyasr.elemental.Game;
+import me.shreyasr.elemental.field.entities.Monster;
 
 public class Board {
 
@@ -16,6 +17,8 @@ public class Board {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 Orb o = grid[i][j];
+                if (o == null)
+                    continue;
                 if (!o.dragging) {
                     o.sprite.setPosition(
                             i * Game.LANE_WIDTH,
@@ -27,6 +30,8 @@ public class Board {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 Orb o = grid[i][j];
+                if (o == null)
+                    continue;
                 if (o.dragging) {
                     o.sprite.setPosition(
                             Gdx.input.getX() - Game.LANE_WIDTH / 2,
@@ -77,6 +82,9 @@ public class Board {
         draggedOrb = null;
         cx = -1;
         cy = -1;
+        Game.GAME.field.addMonster(
+                new Monster(Monster.Type.FIRE_3, Monster.Orientation.GOOD, 1),
+                (int)(Math.random()*6));
     }
 
     public void generate() {

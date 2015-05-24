@@ -28,6 +28,7 @@ public class ElementalBattle extends ApplicationAdapter {
 
     @Override
     public void create() {
+        Game.GAME = this;
         batch = new SpriteBatch();
         field = new Field();
         if (network != null)

@@ -70,9 +70,9 @@ public class Monster implements Entity {
                 break;
             }
         }
-        if(newY < 0){
-            newY = 0.01;
+        if(newY < -1 && orientation == Orientation.EVIL){
             Game.damage(this.attackStregth);
+            return true;
         }
         y = newY;
         if (y>0) {

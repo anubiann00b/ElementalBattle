@@ -8,6 +8,8 @@ import me.shreyasr.elemental.field.entities.Monster;
 
 public class Game {
 
+    public static ElementalBattle GAME = null;
+
     public static int DELTA = 16;
     public static final int WIDTH = Gdx.graphics.getWidth();
     public static final int HEIGHT = Gdx.graphics.getHeight();
