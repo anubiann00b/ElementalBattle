@@ -38,7 +38,15 @@ public class ElementalBattle extends ApplicationAdapter {
         new Thread(network).start();
 
         /*
+         *CMJEIYNVM THIS IS ABSOLUTELY ESSENTIAL
+         * FREAKING STATIC INITIALIZATION
+         * I LITERALLY STABBED MY FUTURE SELF IN THE BACK
+         * But if you want _fun_ bugs, by all means
+         * delete this piece of shit.
          *
+         * IOEFHWIHT #C(QNV&I*#V*Y #Y*RCGXCIN#*^CNRF HNDWG NY*WNYFCSG NCU NHDSF
+         *  IF HWUFVNQIR IA NOICAI UIEHEIM  AAIHAEE H:SIF AICA}#$IV}(MUM({# (*HU GPI
+         *   (W*YCNP*#Q(C#Q$C<#($*CMP$W*YCMRC#{{#V&%M*WVUVW*OVHJ
          */
         MonsterSprite fire3 = MonsterSprite.FIRE_3;
     }
