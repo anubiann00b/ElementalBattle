@@ -10,7 +10,7 @@ public enum Element {
     EARTH,
     LIGHTNING,
     HOLY,
-    ARCANE
+    ARCANE;
     public boolean counter(Element e){
         if(this == HOLY || this==ARCANE || e == HOLY || e==ARCANE)
             return false;
