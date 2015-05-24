@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 
 import me.shreyasr.elemental.ElementalBattle;
 import me.shreyasr.elemental.Game;
@@ -51,6 +52,10 @@ public class NetworkHandler implements Runnable {
             } catch (IOException e) {
                 Gdx.app.error("io", "qq", e);
             }
+            if (numRead == 4) {
+                Game.enemyHealth = ByteBuffer.wrap(arr).getInt();
+                continue;
+            }
             if (numRead != 24)
                 continue;
             Monster m = Monster.deserialize(arr);
@@ -63,6 +68,14 @@ public class NetworkHandler implements Runnable {
             socket.getOutputStream().write(monster.serialize());
         } catch (IOException e) {
             Gdx.app.error("io", "out", e);
+        }
+    }
+
+    public void sendHealth(int health) {
+        try {
+            socket.getOutputStream().write(ByteBuffer.allocate(4).putInt(health).array());
+        } catch (IOException e) {
+            Gdx.app.error("io", "outhp", e);
         }
     }
 }

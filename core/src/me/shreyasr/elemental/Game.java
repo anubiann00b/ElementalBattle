@@ -21,9 +21,11 @@ public class Game {
 
     public static final LinkedBlockingQueue<Monster> toSend = new LinkedBlockingQueue<Monster>();
 
-    public static double health = 20;
+    public static int health = 20;
+    public static int enemyHealth = 20;
 
-    public static void damage(double amount) {
+    public static void damage(int amount) {
         health -= amount;
+        GAME.network.sendHealth(health);
     }
 }

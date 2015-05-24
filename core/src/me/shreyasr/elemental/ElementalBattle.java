@@ -79,7 +79,8 @@ public class ElementalBattle extends ApplicationAdapter {
         shapeRenderer.setColor(Color.RED);
         shapeRenderer.begin();
         shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.rect(0, 991f/1920f*Game.HEIGHT, (float) (Game.WIDTH*Game.health/20), Game.HEALTH_HEIGHT);
+        shapeRenderer.rect(0, 991f / 1920f * Game.HEIGHT, (float) (Game.WIDTH * Game.health / 20), Game.HEALTH_HEIGHT);
+        shapeRenderer.rect(0, 1886f/1920f*Game.HEIGHT, (float) (Game.WIDTH*Game.health/20), Game.HEALTH_HEIGHT);
         shapeRenderer.end();
     }
 }

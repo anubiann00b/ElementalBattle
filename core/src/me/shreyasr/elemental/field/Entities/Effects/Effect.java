@@ -10,8 +10,8 @@ public class Effect {
         this.duration = duration;
     }
 
-    public double getAttack(double org){return org;}
-    public double getDef(double org){return org;}
+    public int getAttack(int org){return org;}
+    public int getDef(int org){return org;}
     public double getSpeed(double org){return org;}
 
     public boolean subtractDuration(double sec) {

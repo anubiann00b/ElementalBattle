@@ -87,10 +87,10 @@ public class Monster implements Entity {
 
         public final MonsterSprite sprite;
         public final Element element;
-        public final double health;
-        public final double attack;
+        public final int health;
+        public final int attack;
 
-        Type(MonsterSprite sprite, Element element, double attack, double health) {
+        Type(MonsterSprite sprite, Element element, int attack, int health) {
             this.sprite = sprite;
             this.element = element;
             this.attack = attack;
@@ -110,7 +110,7 @@ public class Monster implements Entity {
     public int lane;
     public final double speed;
     public double health = 50;
-    public double attackStrength = 1;
+    public int attackStrength = 1;
     public ArrayList<Effect> effects = new ArrayList<Effect>();
 
     public Monster(Monster.Type type, Orientation orientation, double speed, int lane) {
@@ -179,8 +179,8 @@ public class Monster implements Entity {
             base = e.getSpeed(base);
         return base;
     }
-    public double attackMod(){
-        double base = attackStrength;
+    public int attackMod(){
+        int base = attackStrength;
         for(Effect e : effects)
             base = e.getAttack(attackStrength);
         return base;
