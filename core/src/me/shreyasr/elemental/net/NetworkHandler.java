@@ -1,5 +1,7 @@
 package me.shreyasr.elemental.net;
 
+import com.badlogic.gdx.Gdx;
+
 import java.io.IOException;
 import java.net.Socket;
 
@@ -14,11 +16,15 @@ public class NetworkHandler implements Runnable {
 
     public NetworkHandler(Socket socket) {
         this.socket = socket;
+    }
+
+    public void setGame(ElementalBattle game) {
+        this.game = game;
         new Thread(new Runnable() {
             @Override
             public void run() {
                 while(true) {
-                    if (Game.toSend.remainingCapacity() == 0) {
+                    if (Game.toSend == null || Game.toSend.size() == 0) {
                         try {
                             Thread.sleep(10);
                         } catch (InterruptedException e) { }
@@ -30,37 +36,35 @@ public class NetworkHandler implements Runnable {
         }).start();
     }
 
-    public void setGame(ElementalBattle game) {
-        this.game = game;
-    }
-
     @Override
     public void run() {
-        byte[] arr = new byte[8];
+        byte[] arr = new byte[24];
         while (true) {
             try {
                 Thread.sleep(16);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Gdx.app.error("int", "aw", e);
             }
             int numRead = -1;
             try {
                 numRead = socket.getInputStream().read(arr);
             } catch (IOException e) {
-                e.printStackTrace();
+                Gdx.app.error("io", "qq", e);
             }
             if (numRead != 24)
                 continue;
             Monster m = Monster.deserialize(arr);
-            game.field.addMonster(m, m.lane.laneNum);
+            Gdx.app.error("Recv", m.lane + "");
+            game.field.addMonster(m);
         }
     }
 
     public void send(Monster monster) {
+        Gdx.app.error("Send", monster.lane + "");
         try {
             socket.getOutputStream().write(monster.serialize());
         } catch (IOException e) {
-            e.printStackTrace();
+            Gdx.app.error("io", "out", e);
         }
     }
 }

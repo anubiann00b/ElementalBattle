@@ -2,7 +2,8 @@ package me.shreyasr.elemental.field.entities;
 
 import com.badlogic.gdx.utils.TimeUtils;
 
-import me.shreyasr.elemental.Element;
+import java.util.List;
+
 import me.shreyasr.elemental.Game;
 
 /**

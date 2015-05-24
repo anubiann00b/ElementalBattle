@@ -85,8 +85,7 @@ public class Board {
         cx = -1;
         cy = -1;
         Game.GAME.field.addMonster(
-                new Monster(Monster.Type.FIRE_3, Monster.Orientation.GOOD, 1),
-                (int)(Math.random()*6));
+                new Monster(Monster.Type.FIRE_3, Monster.Orientation.GOOD, 1, (int)(Math.random()*6)));
     }
 
     public void generate() {

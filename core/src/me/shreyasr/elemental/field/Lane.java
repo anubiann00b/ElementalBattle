@@ -1,5 +1,6 @@
 package me.shreyasr.elemental.field;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
@@ -8,7 +9,6 @@ import java.util.List;
 
 import me.shreyasr.elemental.Game;
 import me.shreyasr.elemental.field.entities.Monster;
-import me.shreyasr.elemental.field.entities.Spell;
 
 public class Lane {
 
@@ -20,25 +20,28 @@ public class Lane {
     }
 
     public void addMonster(Monster m) {
-        m.lane = this;
         monsters.add(m);
     }
 
     public void update() {
         for (Iterator<Monster> iter = monsters.iterator(); iter.hasNext(); ) {
             Monster m = iter.next();
-            boolean remove = m.update();
-            if (remove) {
-                Game.toSend.add(m);
-                iter.remove();
+            Monster.Status status = m.update(monsters);
+            switch (status) {
+                case SEND:
+                    Game.toSend.add(m);
+                case DIE:
+                    iter.remove();
+                case PASS: break;
             }
         }
     }
 
     public void render(SpriteBatch batch, int lanePos) {
         for (Monster m : monsters) {
-            batch.draw(m.sprite.animation.getKeyFrame(Game.DELTA),
-                    m.xOff+lanePos, (float) ((m.y+1)*Game.LANE_LENGTH+Game.LANE_START));
+            batch.draw(m.sprite.sprite,//m.sprite.animation.getKeyFrame(Game.DELTA),
+                    lanePos+m.xOff-Game.LANE_WIDTH, (float) ((m.y+1)*Game.LANE_LENGTH+Game.LANE_START));
+            Gdx.app.error("ayy", (m.xOff+lanePos-Game.LANE_WIDTH) + " " + (float) ((m.y+1)*Game.LANE_LENGTH+Game.LANE_START));
         }
     }
 }
