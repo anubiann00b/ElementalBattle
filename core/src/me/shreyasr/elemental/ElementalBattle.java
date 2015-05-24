@@ -17,7 +17,7 @@ public class ElementalBattle extends ApplicationAdapter {
     public void create() {
         batch = new SpriteBatch();
         field = new Field();
-        field.addMoster(new Monster(Monster.Type.FIRE_3), 5);
+        field.addMoster(new Monster(Monster.Type.FIRE_3, Monster.Orientation.GOOD), 5);
     }
 
     @Override

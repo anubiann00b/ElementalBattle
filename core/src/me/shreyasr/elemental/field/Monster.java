@@ -14,13 +14,17 @@ public class Monster {
         }
     }
 
-    Sprite sprite;
+    public enum Orientation { GOOD, EVIL }
 
-    int xOff = (int) (Math.random()*50);
+    Sprite sprite;
+    Orientation orientation;
+
+    int xOff = (int) (Math.random()*Field.LANE_WIDTH);
     int y = 0;
     int speed = 1;
 
-    public Monster(Monster.Type type) {
+    public Monster(Monster.Type type, Orientation orientation) {
+        this.orientation = orientation;
         this.sprite = type.sprite;
     }
 
