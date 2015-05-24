@@ -2,6 +2,8 @@ package me.shreyasr.elemental.board;
 
 import java.util.LinkedList;
 
+import javax.swing.Action;
+
 import me.shreyasr.elemental.Element;
 
 public class Board {
@@ -14,8 +16,15 @@ public class Board {
             for(int j = 1; j < grid[i].length; j++){
                 if(grid[i][j] == type){
                     totalCount++;
+                }else if (grid[i][j] == Element.ARCANE){
+                    if(totalCount > 2)
+                        links.add(new Link(i,j,i,j-totalCount+1, ActionType.SPELL));
+                }else if (grid[i][j] == Element.HOLY){
+                    if(totalCount > 2)
+                        links.add(new Link(i,j,i,j-totalCount+1, ActionType.BUFF));
                 }else{
-                    links.add(new Link(i,j,i,j-totalCount+1));
+                    if(totalCount > 2)
+                        links.add(new Link(i,j,i,j-totalCount+1, ActionType.SUMMON));
                 }
             }
         }
@@ -25,19 +34,32 @@ public class Board {
             for(int j = 1; j < grid.length; j++){
                 if(grid[j][i] == type){
                     totalCount++;
+                }else if (grid[j][i] == Element.ARCANE){
+                    if(totalCount > 2)
+                        links.add(new Link(i,j,i,j-totalCount+1, ActionType.SPELL));
+                }else if (grid[j][i] == Element.HOLY){
+                    if(totalCount > 2)
+                        links.add(new Link(i,j,i,j-totalCount+1, ActionType.BUFF));
                 }else{
-                    links.add(new Link(j,i,j-totalCount+1,i));
+                    links.add(new Link(j,i,j-totalCount+1,i, ActionType.SUMMON));
                 }
             }
         }
     }
-    public class Link{
-        public int x1,y1,x2,y2;
-        public Link(int x1,int y1,int x2,int y2){
-            this.x1=x1;
-            this.y1=y1;
-            this.x2=x2;
-            this.y2=y2;
+    public class Link {
+        public int x1, y1, x2, y2;
+        public ActionType type;
+        public Link(int x1, int y1, int x2, int y2, ActionType t) {
+            this.x1 = x1;
+            this.y1 = y1;
+            this.x2 = x2;
+            this.y2 = y2;
+            type = t;
         }
+    }
+    public enum ActionType{
+        SPELL,
+        SUMMON,
+        BUFF
     }
 }
