@@ -68,6 +68,12 @@ public class Monster implements me.shreyasr.elemental.field.entities.Entity{
             health-=a.baseDamage * 2;
         else
             health-=a.baseDamage;
+        if(health < 0)
+            die();
+    }
+    @Override
+    public void die(){
+
     }
 }
 

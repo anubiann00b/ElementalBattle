@@ -5,4 +5,5 @@ package me.shreyasr.elemental.field.entities;
  */
 public interface Entity {
     public void takeDamage(Attack a);
+    public void die();
 }

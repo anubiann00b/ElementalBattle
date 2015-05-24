@@ -8,5 +8,12 @@ public class Player implements Entity{
     @Override
     public void takeDamage(Attack a){
         health-=a.baseDamage;
+
+        if(health < 0)
+            die();
+    }
+    @Override
+    public void die(){
+
     }
 }
