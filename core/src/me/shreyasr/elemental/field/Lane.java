@@ -41,7 +41,6 @@ public class Lane {
         for (Monster m : monsters) {
             batch.draw(m.sprite.sprite,//m.sprite.animation.getKeyFrame(Game.DELTA),
                     lanePos+m.xOff-Game.LANE_WIDTH, (float) ((m.y+1)*Game.LANE_LENGTH+Game.LANE_START));
-            Gdx.app.error("ayy", (m.xOff+lanePos-Game.LANE_WIDTH) + " " + (float) ((m.y+1)*Game.LANE_LENGTH+Game.LANE_START));
         }
     }
 }

@@ -54,13 +54,11 @@ public class NetworkHandler implements Runnable {
             if (numRead != 24)
                 continue;
             Monster m = Monster.deserialize(arr);
-            Gdx.app.error("Recv", m.lane + "");
             game.field.addMonster(m);
         }
     }
 
     public void send(Monster monster) {
-        Gdx.app.error("Send", monster.lane + "");
         try {
             socket.getOutputStream().write(monster.serialize());
         } catch (IOException e) {
