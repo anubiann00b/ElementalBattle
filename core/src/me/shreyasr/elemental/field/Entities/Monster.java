@@ -64,7 +64,7 @@ public class Monster implements Entity {
     public Monster(Monster.Type type, Orientation orientation, double speed, int lane) {
         this.type = type;
         this.orientation = orientation;
-        this.speed = sp-eed;
+        this.speed = speed;
         this.lane = lane;
         this.sprite = type.sprite;
     }
