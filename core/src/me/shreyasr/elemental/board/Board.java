@@ -1,5 +1,7 @@
 package me.shreyasr.elemental.board;
 
+import com.badlogic.gdx.Gdx;
+
 import java.util.LinkedList;
 
 import javax.swing.Action;
@@ -8,23 +10,24 @@ import me.shreyasr.elemental.Element;
 
 public class Board {
     public Element[][] grid;
+    public int lastX,lastY;
     public void generate(){
         LinkedList<Link> links = new LinkedList<Link>();
-        for(int i = 0; i < grid.length; i++){
+        for(int i = 0; i < grid.length; i++) {
             int totalCount = 1;
             Element type = grid[i][0];
-            for(int j = 1; j < grid[i].length; j++){
-                if(grid[i][j] == type){
+            for (int j = 1; j < grid[i].length; j++) {
+                if (grid[i][j] == type) {
                     totalCount++;
-                }else if (grid[i][j] == Element.ARCANE){
-                    if(totalCount > 2)
-                        links.add(new Link(i,j,i,j-totalCount+1, ActionType.SPELL));
-                }else if (grid[i][j] == Element.HOLY){
-                    if(totalCount > 2)
-                        links.add(new Link(i,j,i,j-totalCount+1, ActionType.BUFF));
-                }else{
-                    if(totalCount > 2)
-                        links.add(new Link(i,j,i,j-totalCount+1, ActionType.SUMMON));
+                } else if (grid[i][j] == Element.ARCANE) {
+                    if (totalCount > 2)
+                        links.add(new Link(i, j, i, j - totalCount + 1, ActionType.SPELL));
+                } else if (grid[i][j] == Element.HOLY) {
+                    if (totalCount > 2)
+                        links.add(new Link(i, j, i, j - totalCount + 1, ActionType.BUFF));
+                } else {
+                    if (totalCount > 2)
+                        links.add(new Link(i, j, i, j - totalCount + 1, ActionType.SUMMON));
                 }
             }
         }
@@ -61,6 +64,9 @@ public class Board {
         Element swap = grid[loc1[0]][loc1[1]];
         grid[loc1[0]][loc1[1]] = grid[loc2[0]][loc2[1]];
         grid[loc2[0]][loc2[1]] = swap;
+    }
+    public void touch(int x, int y){
+
     }
     public class Link {
         public int x1, y1, x2, y2;
