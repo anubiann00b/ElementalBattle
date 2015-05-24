@@ -4,10 +4,11 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import java.nio.ByteBuffer;
 
+import me.shreyasr.elemental.Element;
 import me.shreyasr.elemental.Game;
 import me.shreyasr.elemental.graphics.Sprite;
 
-public class Monster {
+public class Monster implements me.shreyasr.elemental.field.entities.Entity{
 
     public byte[] serialize() {
         return ByteBuffer.allocate(24)
@@ -44,7 +45,8 @@ public class Monster {
     public long endTime = 0;
     public int lane = -1;
     public final double speed;
-
+    public Element element;
+    public double health;
     public Monster(Monster.Type type, Orientation orientation, double speed) {
         this.type = type;
         this.orientation = orientation;
@@ -60,4 +62,40 @@ public class Monster {
         }
         return false;
     }
+    @Override
+    public void takeDamage(Attack a){
+
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
