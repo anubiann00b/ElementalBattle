@@ -167,7 +167,6 @@ public class Monster implements Entity {
     }
     @Override
     public void takeDamage(Attack a){
-        Gdx.app.error("Damage", a.baseDamage + "");
         if(a.type.counter(type.element))
             health-=a.baseDamage * 2 * defMod();
         else

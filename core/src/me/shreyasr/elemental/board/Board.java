@@ -107,7 +107,7 @@ public class Board {
                 reset();
                 dragCooldown = false;
             }
-        }, 500);
+        }, 250);
     }
 
     public void reset() { // 0 0 , 0 1

@@ -25,6 +25,7 @@ public class Lane {
     }
 
     public void update() {
+        inUse = true;
         for (Iterator<Monster> iter = monsters.iterator(); iter.hasNext(); ) {
             Monster m = iter.next();
             Monster.Status status = m.update(monsters);
@@ -36,6 +37,7 @@ public class Lane {
                 case PASS: break;
             }
         }
+        inUse = false;
     }
 
     public void render(SpriteBatch batch, int lanePos) {

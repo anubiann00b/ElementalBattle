@@ -2,10 +2,12 @@ package me.shreyasr.elemental;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.net.InetAddress;
 
@@ -15,11 +17,12 @@ import me.shreyasr.elemental.graphics.MonsterSprite;
 import me.shreyasr.elemental.net.NetworkHandler;
 
 public class ElementalBattle extends ApplicationAdapter {
-    
+
     SpriteBatch batch;
     public Field field;
     Board board;
     Sprite bg;
+    ShapeRenderer shapeRenderer;
 
     NetworkHandler network;
     public InetAddress broadcastAddress;
@@ -33,6 +36,7 @@ public class ElementalBattle extends ApplicationAdapter {
     public void create() {
         Game.GAME = this;
         batch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
         field = new Field();
         if (network != null)
             network.setGame(this);
@@ -71,5 +75,11 @@ public class ElementalBattle extends ApplicationAdapter {
         field.render(batch);
         board.render(batch);
         batch.end();
+        shapeRenderer.setAutoShapeType(true);
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.begin();
+        shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.rect(0, 991f/1920f*Game.HEIGHT, (float) (Game.WIDTH*Game.health/20), Game.HEALTH_HEIGHT);
+        shapeRenderer.end();
     }
 }
