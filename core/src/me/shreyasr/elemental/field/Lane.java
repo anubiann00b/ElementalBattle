@@ -1,18 +1,17 @@
 package me.shreyasr.elemental.field;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import me.shreyasr.elemental.Game;
 import me.shreyasr.elemental.field.entities.Monster;
 
 public class Lane {
 
-    public List<Monster> monsters = new ArrayList<Monster>();
+    public List<Monster> monsters = new CopyOnWriteArrayList<>();
     public final int laneNum;
 
     public Lane(int laneNum) {
@@ -40,7 +39,7 @@ public class Lane {
     public void render(SpriteBatch batch, int lanePos) {
         for (Monster m : monsters) {
             batch.draw(m.sprite.sprite,//m.sprite.animation.getKeyFrame(Game.DELTA),
-                    lanePos+m.xOff-Game.LANE_WIDTH, (float) ((m.y+1)*Game.LANE_LENGTH+Game.LANE_START));
+                    lanePos+m.xOff-Game.LANE_WIDTH/2, (float) ((m.y+1)*Game.LANE_LENGTH+Game.LANE_START));
         }
     }
 }

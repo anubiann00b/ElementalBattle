@@ -35,28 +35,27 @@ public class Monster implements Entity {
     }
 
     public enum Type {
-        FIRE_3(MonsterSprite.FIRE_3, Element.FIRE),
-        FIRE_4(MonsterSprite.FIRE_4, Element.FIRE),
-        FIRE_5(MonsterSprite.FIRE_5, Element.FIRE),
+        FIRE_3(MonsterSprite.FIRE_3, Element.FIRE, 1, 100),
+        FIRE_4(MonsterSprite.FIRE_4, Element.FIRE, 2, 200),
+        FIRE_5(MonsterSprite.FIRE_5, Element.FIRE, 4, 400),
 
-        COLD_3(MonsterSprite.COLD_3, Element.COLD),
-        COLD_4(MonsterSprite.COLD_4, Element.COLD),
-        COLD_5(MonsterSprite.COLD_5, Element.COLD),
+        COLD_3(MonsterSprite.COLD_3, Element.COLD, 1, 100),
+        COLD_4(MonsterSprite.COLD_4, Element.COLD, 2, 200),
+        COLD_5(MonsterSprite.COLD_5, Element.COLD, 4, 400),
 
-        WATER_3(MonsterSprite.WATER_3, Element.WATER),
-        WATER_4(MonsterSprite.WATER_4, Element.WATER),
-        WATER_5(MonsterSprite.WATER_5, Element.WATER),
+        WATER_3(MonsterSprite.WATER_3, Element.WATER, 1, 100),
+        WATER_4(MonsterSprite.WATER_4, Element.WATER, 2, 200),
+        WATER_5(MonsterSprite.WATER_5, Element.WATER, 4, 400),
 
-        LIGHTNING_3(MonsterSprite.LIGHTNING_3, Element.LIGHTNING),
-        LIGHTNING_4(MonsterSprite.LIGHTNING_4, Element.LIGHTNING),
-        LIGHTNING_5(MonsterSprite.LIGHTNING_5, Element.LIGHTNING),
+        LIGHTNING_3(MonsterSprite.LIGHTNING_3, Element.LIGHTNING, 1, 100),
+        LIGHTNING_4(MonsterSprite.LIGHTNING_4, Element.LIGHTNING, 2, 200),
+        LIGHTNING_5(MonsterSprite.LIGHTNING_5, Element.LIGHTNING, 4, 400),
 
-        EARTH_3(MonsterSprite.EARTH_3, Element.EARTH),
-        EARTH_4(MonsterSprite.EARTH_4, Element.EARTH),
-        EARTH_5(MonsterSprite.EARTH_5, Element.EARTH);
+        EARTH_3(MonsterSprite.EARTH_3, Element.EARTH, 1, 10),
+        EARTH_4(MonsterSprite.EARTH_4, Element.EARTH, 2, 20),
+        EARTH_5(MonsterSprite.EARTH_5, Element.EARTH, 4, 40);
 
         public static Type get(Element e, int size) {
-            Gdx.app.error("size", size+"");
             switch(size) {
                 case 3:
                     switch(e) {
@@ -88,10 +87,14 @@ public class Monster implements Entity {
 
         public final MonsterSprite sprite;
         public final Element element;
+        public final double health;
+        public final double attack;
 
-        Type(MonsterSprite sprite, Element element) {
+        Type(MonsterSprite sprite, Element element, double attack, double health) {
             this.sprite = sprite;
             this.element = element;
+            this.attack = attack;
+            this.health = health;
         }
     }
 
@@ -101,13 +104,13 @@ public class Monster implements Entity {
     public Type type;
     public Orientation orientation;
 
-    public int xOff = (int) (Math.random()* Game.LANE_WIDTH);
+    public int xOff = (int) ((Math.random()-0.5)* Game.LANE_WIDTH)/4;
     public double y = -1;
     public long endTime = 0;
     public int lane;
     public final double speed;
-    public double health;
-    public double attackStrength;
+    public double health = 50;
+    public double attackStrength = 1;
     public ArrayList<Effect> effects = new ArrayList<Effect>();
 
     public Monster(Monster.Type type, Orientation orientation, double speed, int lane) {
@@ -116,6 +119,8 @@ public class Monster implements Entity {
         this.speed = speed;
         this.lane = lane;
         this.sprite = type.sprite;
+        health = type.health;
+        attackStrength = type.attack;
     }
 
     public enum Status { PASS, SEND, DIE }
@@ -129,17 +134,22 @@ public class Monster implements Entity {
                 e.remove();
             }
         }
-        double newY = y + speedMod()*Game.LANE_LENGTH*0.001*0.005;
+        double newY = y + speedMod()*Game.LANE_LENGTH*0.001*0.004;
         for(Monster m : monsters) {
-            if(m.y > y && m.y < newY) {
-                newY = m.y-0.01;
-                this.attack(m);
-                break;
-            }
-            else if(m.y < y && m.y > newY) {
-                newY = m.y + 0.01;
-                this.attack(m);
-                break;
+            if (m == this)
+                continue;
+            if (orientation == Orientation.GOOD) {
+                if (m.y - y < 0.1 && m.y - y > 0) {
+                    newY = y;
+                    if (m.orientation == Orientation.EVIL)
+                        this.attack(m);
+                }
+            } else {
+                if (m.y - y > -0.1 && m.y - y < 0) {
+                    newY = y;
+                    if (m.orientation == Orientation.GOOD)
+                        this.attack(m);
+                }
             }
         }
         if(newY<-1 && orientation == Orientation.EVIL) {
@@ -151,22 +161,19 @@ public class Monster implements Entity {
             endTime = TimeUtils.millis();
             return Status.SEND;
         }
+        if (health < 0)
+            return Status.DIE;
         return Status.PASS;
     }
     @Override
     public void takeDamage(Attack a){
+        Gdx.app.error("Damage", a.baseDamage + "");
         if(a.type.counter(type.element))
             health-=a.baseDamage * 2 * defMod();
         else
             health-=a.baseDamage;
-        if(health < 0)
-            die();
     }
 
-    @Override
-    public void die() {
-
-    }
     public double speedMod(){
         double base = speed;
         for(Effect e : effects)
@@ -186,10 +193,7 @@ public class Monster implements Entity {
         return base;
     }
     public void attack(Entity e){
-        e.takeDamage(new Attack(
-                type.element,
-                attackMod()
-        ));
+        e.takeDamage(new Attack(type.element, attackMod()));
     }
     public void addEffect(Effect e){
         effects.add(e);
