@@ -64,7 +64,10 @@ public class Monster implements me.shreyasr.elemental.field.entities.Entity{
     }
     @Override
     public void takeDamage(Attack a){
-
+        if(a.type.counter(element))
+            health-=a.baseDamage * 2;
+        else
+            health-=a.baseDamage;
     }
 }
 
