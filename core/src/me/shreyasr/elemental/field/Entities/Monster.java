@@ -34,12 +34,14 @@ public class Monster implements Entity {
     }
 
     public enum Type {
-        FIRE_3(MonsterSprite.FIRE_3);
+        FIRE_3(MonsterSprite.FIRE_3, Element.FIRE);
 
         public final MonsterSprite sprite;
+        public final Element element;
 
-        Type(MonsterSprite sprite) {
+        Type(MonsterSprite sprite, Element element) {
             this.sprite = sprite;
+            this.element = element;
         }
     }
 
