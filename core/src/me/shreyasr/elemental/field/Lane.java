@@ -11,7 +11,7 @@ import me.shreyasr.elemental.field.entities.Monster;
 
 public class Lane {
 
-    private List<Monster> monsters = new ArrayList<Monster>();
+    public List<Monster> monsters = new ArrayList<Monster>();
     final int laneNum;
 
     public Lane(int laneNum) {

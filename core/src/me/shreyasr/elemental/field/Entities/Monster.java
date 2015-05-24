@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
 
 import me.shreyasr.elemental.Element;
 import me.shreyasr.elemental.Game;
+import me.shreyasr.elemental.field.Lane;
 import me.shreyasr.elemental.graphics.Sprite;
 
 public class Monster implements me.shreyasr.elemental.field.entities.Entity{
@@ -43,10 +44,11 @@ public class Monster implements me.shreyasr.elemental.field.entities.Entity{
     public int xOff = (int) (Math.random()* Game.LANE_WIDTH);
     public double y = -1;
     public long endTime = 0;
-    public int lane = -1;
+    public Lane lane;
     public final double speed;
     public Element element;
     public double health;
+    public double attackStregth;
     public Monster(Monster.Type type, Orientation orientation, double speed) {
         this.type = type;
         this.orientation = orientation;
@@ -55,7 +57,25 @@ public class Monster implements me.shreyasr.elemental.field.entities.Entity{
     }
 
     public boolean update() {
-        y += speed*Game.LANE_LENGTH*0.001*0.01;
+        double newY = y + speed*Game.LANE_LENGTH*0.001*0.01;
+        for(Monster m : lane.monsters){
+            if(m.y > y && m.y < newY){
+                newY = m.y-0.01;
+                this.attack(m);
+                break;
+
+            }
+            else if(m.y < y && m.y > newY) {
+                newY = m.y + 0.01;
+                this.attack(m);
+                break;
+            }
+        }
+        if(newY < 0){
+            newY = 0.01;
+            this.attack(self);
+        }
+        y = newY;
         if (y>0) {
             endTime = TimeUtils.millis();
             return true;
@@ -74,6 +94,12 @@ public class Monster implements me.shreyasr.elemental.field.entities.Entity{
     @Override
     public void die(){
 
+    }
+    public void attack(Entity e){
+        e.takeDamage(new Attack(
+                element,
+                attackStregth
+        ));
     }
 }
 

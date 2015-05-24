@@ -6,11 +6,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import me.shreyasr.elemental.Game;
 import me.shreyasr.elemental.field.entities.Monster;
+import me.shreyasr.elemental.field.entities.Player;
 
 public class Field {
 
     Lane[] lanes = new Lane[6];
-
+    public Player self;
+    public Player enemy;
     public Field() {
         for (int i=0;i<6;i++) {
             lanes[i] = new Lane(i);
@@ -30,7 +32,6 @@ public class Field {
     public void render(SpriteBatch batch) {
         for (int i=0;i<6;i++) {
             lanes[i].render(batch, Game.LANE_WIDTH*i);
-
             batch.end();
             shapeRenderer.setAutoShapeType(true);
             shapeRenderer.begin();
