@@ -9,6 +9,7 @@ import java.util.List;
 
 import me.shreyasr.elemental.Element;
 import me.shreyasr.elemental.Game;
+import me.shreyasr.elemental.field.entities.Effects.Effect;
 import me.shreyasr.elemental.graphics.MonsterSprite;
 
 public class Monster implements Entity {
@@ -74,11 +75,10 @@ public class Monster implements Entity {
             Effect eff = e.next();
             boolean t = eff.subtractDuration(0.03333);
             if (t) {
-                eff.unapplyEffect(this);
                 e.remove();
             }
         }
-        double newY = y + speed*Game.LANE_LENGTH*0.001*0.01;
+        double newY = y + speedMod()*Game.LANE_LENGTH*0.001*0.01;
         for(Monster m : monsters) {
             if(m.y > y && m.y < newY) {
                 newY = m.y-0.01;
@@ -92,7 +92,7 @@ public class Monster implements Entity {
             }
         }
         if(newY<-1 && orientation == Orientation.EVIL) {
-            Game.damage(this.attackStrength);
+            Game.damage(attackMod());
             return Status.DIE;
         }
         y = newY;
@@ -116,11 +116,22 @@ public class Monster implements Entity {
     public void die() {
 
     }
-
+    public double speedMod(){
+        double base = speed;
+        for(Effect e : effects)
+            base = e.getSpeed(base);
+        return base;
+    }
+    public double attackMod(){
+        double base = attackStrength;
+        for(Effect e : effects)
+            base = e.getAttack(attackStrength);
+        return base;
+    }
     public void attack(Entity e){
         e.takeDamage(new Attack(
                 element,
-                attackStrength
+                attackMod()
         ));
     }
     public void addEffect(Effect e){
