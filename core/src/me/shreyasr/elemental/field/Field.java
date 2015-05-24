@@ -28,7 +28,7 @@ public class Field {
     ShapeRenderer shapeRenderer = new ShapeRenderer();
     public void render(SpriteBatch batch) {
         for (int i=0;i<6;i++) {
-            lanes[i].render(batch, Game.LANE_WIDTH*i, Game.LANE_START);
+            lanes[i].render(batch, Game.LANE_WIDTH*i);
 
             batch.end();
             shapeRenderer.setAutoShapeType(true);
