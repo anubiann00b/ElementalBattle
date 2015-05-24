@@ -72,6 +72,8 @@ public class Board {
         } else {
             if (isDragging) {
                 stopDragging();
+                generate();
+                initialize();
             }
         }
     }
