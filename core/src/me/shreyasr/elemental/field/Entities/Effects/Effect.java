@@ -18,4 +18,7 @@ public abstract class Effect {
         duration -= sec;
         return duration < 0;
     }
+    public Effect clone(){
+        return (Effect)clone();
+    }
 }
