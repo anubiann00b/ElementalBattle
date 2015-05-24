@@ -38,26 +38,45 @@ public class Board {
     }
 
     boolean isDragging = false;
+    int cx = -1;
+    int cy = -1;
     Orb draggedOrb = null;
     public void update() {
         if (Gdx.input.isTouched()) {
+            int ox = Gdx.input.getX() / Game.LANE_WIDTH;
+            int oy = (Game.HEIGHT - Gdx.input.getY()) / Game.LANE_WIDTH;
             if (!isDragging) {
-                int ox = Gdx.input.getX() / Game.LANE_WIDTH;
-                int oy = (Game.HEIGHT - Gdx.input.getY()) / Game.LANE_WIDTH;
                 if (oy > 4)
                     return;
                 isDragging = true;
                 draggedOrb = grid[ox][oy];
                 draggedOrb.dragging = true;
+                cx = ox;
+                cy = oy;
+            } else {
+                if (oy>4 || oy<0 || ox<0 || ox>5) {
+                    stopDragging();
+                    return;
+                }
+                if (cx != ox || cy != oy) {
+                    swap(cx, cy, ox, oy);
+                    cx = ox;
+                    cy = oy;
+                }
             }
         } else {
             if (isDragging) {
-                isDragging = false;
-                draggedOrb.dragging = false;
-                // place orb?
-                draggedOrb = null;
+                stopDragging();
             }
         }
+    }
+
+    private void stopDragging() {
+        isDragging = false;
+        draggedOrb.dragging = false;
+        draggedOrb = null;
+        cx = -1;
+        cy = -1;
     }
 
     public void generate() {
