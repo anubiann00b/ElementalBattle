@@ -39,6 +39,7 @@ public class ElementalBattle extends ApplicationAdapter {
 
     @Override
     public void render() {
+        board.update();
         field.update();
 
         Gdx.gl.glClearColor(0, 0, 0, 1);

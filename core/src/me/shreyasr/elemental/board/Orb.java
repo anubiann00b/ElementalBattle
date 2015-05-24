@@ -9,6 +9,7 @@ public class Orb {
 
     public final Sprite sprite;
     public final Element element;
+    public boolean dragging = false;
 
     public Orb(Element element) {
         this.element = element;

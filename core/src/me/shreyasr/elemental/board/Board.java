@@ -15,22 +15,46 @@ public class Board {
     public void render(SpriteBatch batch) {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
-                grid[i][j].sprite.setPosition(
-                        i*Game.LANE_WIDTH,
-                        j*Game.LANE_WIDTH);
-                grid[i][j].sprite.draw(batch);
+                Orb o = grid[i][j];
+                if (!o.dragging)
+                    o.sprite.setPosition(
+                            i*Game.LANE_WIDTH,
+                            j*Game.LANE_WIDTH);
+                o.sprite.draw(batch);
+            }
+        }
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                Orb o = grid[i][j];
+                if (o.dragging)
+                    o.sprite.setPosition(
+                            Gdx.input.getX()-Game.LANE_WIDTH/2,
+                            Game.HEIGHT-Gdx.input.getY()-Game.LANE_WIDTH/2);
+                o.sprite.draw(batch);
             }
         }
     }
 
     boolean isDragging = false;
+    Orb draggedOrb = null;
     public void update() {
-        if (Gdx.input.isTouched() && !isDragging) {
-            int ox = Gdx.input.getX()/Game.LANE_WIDTH;
-            int oy = (Gdx.input.getY()-Game.BOARD_END)/Game.LANE_WIDTH;
-            if (oy > 5)
-                return;
-            isDragging = true;
+        if (Gdx.input.isTouched()) {
+            if (!isDragging) {
+                int ox = Gdx.input.getX() / Game.LANE_WIDTH;
+                int oy = (Game.HEIGHT - Gdx.input.getY()) / Game.LANE_WIDTH;
+                if (oy > 4)
+                    return;
+                isDragging = true;
+                draggedOrb = grid[ox][oy];
+                draggedOrb.dragging = true;
+            }
+        } else {
+            if (isDragging) {
+                isDragging = false;
+                draggedOrb.dragging = false;
+                // place orb?
+                draggedOrb = null;
+            }
         }
     }
 
