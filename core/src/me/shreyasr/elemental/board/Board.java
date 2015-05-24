@@ -72,7 +72,7 @@ public class Board {
         } else {
             if (isDragging) {
                 stopDragging();
-                generate();
+                compute();
                 initialize();
             }
         }
@@ -88,7 +88,7 @@ public class Board {
                 new Monster(Monster.Type.FIRE_3, Monster.Orientation.GOOD, 1, (int)(Math.random()*6)));
     }
 
-    public void generate() {
+    public LinkedList<Link> compute() {
         LinkedList<Link> links = new LinkedList<Link>();
         for(int i = 0; i < grid.length; i++) {
             int totalCount = 1;
@@ -131,6 +131,7 @@ public class Board {
             for (int i = tar[1]; i <= tar[2]; i++)
                 grid[tar[0]][i] = null;
         }
+        return links;
     }
 
     public void initialize() {

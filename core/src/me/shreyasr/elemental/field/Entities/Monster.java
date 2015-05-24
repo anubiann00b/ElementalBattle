@@ -59,12 +59,12 @@ public class Monster implements Entity {
     public Element element = Element.FIRE;
     public double health;
     public double attackStrength;
-    public ArrayList<Effect> effects = new ArrayList<Effect>;
+    public ArrayList<Effect> effects = new ArrayList<Effect>();
 
     public Monster(Monster.Type type, Orientation orientation, double speed, int lane) {
         this.type = type;
         this.orientation = orientation;
-        this.speed = speed;
+        this.speed = sp-eed;
         this.lane = lane;
         this.sprite = type.sprite;
     }
