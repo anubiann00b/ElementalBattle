@@ -137,7 +137,6 @@ public class Monster implements Entity {
         ));
     }
     public void addEffect(Effect e){
-        e.applyEffect(this);
         effects.add(e);
     }
 }
