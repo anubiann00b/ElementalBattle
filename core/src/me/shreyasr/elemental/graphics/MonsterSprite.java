@@ -4,13 +4,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class Sprite {
+public class MonsterSprite {
 
     public Animation animation;
 
-    public static Sprite FIRE_3 = new Sprite("badlogic.jpg",23,32,16);
+    public static MonsterSprite FIRE_3 = new MonsterSprite("badlogic.jpg",23,32,16);
 
-    public Sprite(String path, int width, int height, int frameSpeed) {
+    public MonsterSprite(String path, int width, int height, int frameSpeed) {
         Texture texture = new Texture(path);
         TextureRegion[][] regions = TextureRegion.split(texture, width, height);
         TextureRegion[] region = new TextureRegion[regions.length * regions[0].length];

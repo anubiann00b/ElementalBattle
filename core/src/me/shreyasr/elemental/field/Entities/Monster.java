@@ -6,7 +6,7 @@ import java.nio.ByteBuffer;
 
 import me.shreyasr.elemental.Element;
 import me.shreyasr.elemental.Game;
-import me.shreyasr.elemental.graphics.Sprite;
+import me.shreyasr.elemental.graphics.MonsterSprite;
 
 public class Monster implements me.shreyasr.elemental.field.entities.Entity{
 
@@ -25,18 +25,18 @@ public class Monster implements me.shreyasr.elemental.field.entities.Entity{
     }
 
     public enum Type {
-        FIRE_3(Sprite.FIRE_3);
+        FIRE_3(MonsterSprite.FIRE_3);
 
-        public final Sprite sprite;
+        public final MonsterSprite sprite;
 
-        Type(Sprite sprite) {
+        Type(MonsterSprite sprite) {
             this.sprite = sprite;
         }
     }
 
     public enum Orientation { GOOD, EVIL }
 
-    public Sprite sprite;
+    public MonsterSprite sprite;
     public Type type;
     public Orientation orientation;
 
