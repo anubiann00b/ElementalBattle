@@ -18,7 +18,7 @@ public class Field {
         }
     }
 
-    public void addMoster(Monster m, int lane) {
+    public void addMonster(Monster m, int lane) {
         lanes[lane].addMonster(m);
     }
 
